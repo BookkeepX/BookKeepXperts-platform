@@ -278,3 +278,40 @@ Keep configuration (e.g., thresholds, mappings) externalized in /config so the G
 
 This Golden Path serves as the reference workflow for all design, testing, and iteration.
 If a new feature or change conflicts with this flow, the impact should be carefully evaluated.
+
+---
+
+# 🏗 2. System Requirements
+
+## Required accounts/tools
+
+You will need access to the following tools and environments:
+
+### 🔐 Accounts
+- GitHub (access to the repo)
+- Make.com (Dev workspace)
+- OpenAI API key (dev)
+- QuickBooks Online Developer account (sandbox)
+- Plaid sandbox account
+- OCR provider (Veryfi or Google Document AI)
+- Google Workspace  
+  - Sheets  
+  - Looker Studio  
+  - Drive  
+
+### 🧰 Local tools
+- Python 3.10+  
+- VS Code (recommended)  
+- Git + GitHub Desktop (or CLI)  
+- Ability to edit Markdown  
+
+### 🧪 Testing tools
+- Postman (optional but helpful)  
+- Make.com Webhooks Tester  
+
+---
+
+# 🗂 3. Repository Overview
+
+The repo contains everything you need to understand the platform architecture:
+

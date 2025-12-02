@@ -105,3 +105,176 @@ Example (conceptual) response per transaction:
   "memo": "Team lunch at restaurant",
   "confidence": 0.93
 }
+2.4 Step 4 – Confidence-Based Routing
+
+Goal: Decide which transactions can be auto-posted and which need review.
+
+Actions:
+
+The Automation Layer (Make.com) evaluates each transaction:
+
+If confidence >= 0.80 → mark as auto-approve
+
+If confidence < 0.80 → mark as needs_review
+
+For the Golden Path, we assume:
+
+Most transactions are high-confidence.
+
+Low-confidence transactions are relatively few and will be queued separately for manual review (outside of this “happy path”).
+
+Both approved and review-flagged entries are logged to a Google Sheet:
+
+transactions_log tab for the full history
+
+review_queue tab for low-confidence items
+
+For the Golden Path, the primary focus is the auto-approved flow.
+
+2.5 Step 5 – Posting to QuickBooks
+
+Goal: Write the categorized results back into QuickBooks automatically.
+
+Actions:
+
+For each auto-approved transaction:
+
+Use QuickBooks Online API to update the transaction’s category/account.
+
+Optionally update memo/description as well.
+
+Confirm success or log any errors:
+
+Successes are logged with a timestamp.
+
+Failures are logged for retry or manual handling.
+
+At the end of this step, the client’s QuickBooks company:
+
+Has correctly categorized transactions
+
+Matches the AI’s decisions for high-confidence items
+
+2.6 Step 6 – Logging & Auditing
+
+Goal: Maintain a full audit log of what the system did.
+
+Actions:
+
+All categorized transactions (approved + low-confidence) are logged to a Google Sheet, including:
+
+Date
+
+Description
+
+Original category (if any)
+
+Suggested category
+
+Confidence
+
+Status (auto-approved vs needs_review)
+
+QBO sync status
+
+This log is critical for:
+
+Debugging issues
+
+Explaining behavior to clients
+
+Continuous improvement of AI prompts and rules
+
+2.7 Step 7 – Month-End Reporting
+
+Goal: Generate a clear, automated financial report at period-end.
+
+Actions:
+
+At month-end, a separate Make.com scenario runs:
+
+Confirms that all transactions for the period are categorized.
+
+Ensures there are no major anomalies (optional for Golden Path).
+
+Financial data is pulled from QBO or the aggregated Google Sheet:
+
+Totals by category
+
+Key metrics (e.g., revenue, expenses, profit)
+
+Data is written into a Google Sheets report tab or template file.
+
+Optionally, Looker Studio dashboards are refreshed.
+
+The Golden Path assumption:
+
+Data is clean
+
+No missing receipt edge cases
+
+No conflicts or API failures
+
+2.8 Step 8 – Client Delivery
+
+Goal: Deliver the results to the client in a professional, automated way.
+
+Actions:
+
+The platform generates:
+
+A PDF export of the report, or
+
+A link to a live dashboard, or both.
+
+The Notification layer (Mailchimp or equivalent) sends:
+
+“Your books are ready” email
+
+Includes:
+
+Summary of the month
+
+Link to portal
+
+Attachments or dashboard URLs
+
+The Client Portal is updated:
+
+Reports and files are available for download.
+
+Client can log in and review.
+
+At this point, the full end-to-end Golden Path has executed successfully.
+
+3. Golden Path vs. Edge Cases
+
+The Golden Path does not include:
+
+Handling API downtime (QuickBooks, Plaid, OpenAI, OCR)
+
+Low-confidence transactions and manual review flows
+
+Missing receipts and follow-up requests
+
+AP/AR automation
+
+Cash flow forecasting
+
+Multi-entity consolidations
+
+These are considered extensions to the core Golden Path and can be layered on once the primary flow is stable.
+
+4. Developer Implementation Priority
+
+When building or extending the system, developers should:
+
+Protect the Golden Path first.
+Never break the core ingestion → AI → QBO → reporting loop.
+
+Add features as optional branches from this central flow.
+
+Keep configuration (e.g., thresholds, mappings) externalized in /config so the Golden Path logic itself remains stable.
+
+This Golden Path serves as the reference workflow for all design, testing, and iteration.
+If a new feature or change conflicts with this flow, the impact should be carefully evaluated.

@@ -315,3 +315,30 @@ You will need access to the following tools and environments:
 
 The repo contains everything you need to understand the platform architecture:
 
+bookkeepxperts-platform/
+│
+├── docs/ → Architecture, workflow, onboarding, security
+├── prompts/ → AI prompt templates
+├── scripts/ → Python API test tools
+├── make-blueprints/ → Make.com exported scenarios
+├── config/ → Chart of accounts & rule mappings
+├── dashboards/ → Reporting templates
+└── tests/ → Example unit & integration tests
+
+
+Every developer should read at minimum:
+
+- `docs/architecture.md`
+- `docs/workflow.md`
+- `prompts/`
+- `config/`
+
+---
+
+# 🔧 4. Setup Instructions
+
+## Step 1 — Clone the repository
+
+```bash
+git clone https://github.com/BookkeepX/BookKeepXperts-platform.git
+cd BookKeepXperts-platform

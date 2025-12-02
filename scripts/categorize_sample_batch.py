@@ -1,0 +1,1 @@
+# Categorization batch test
